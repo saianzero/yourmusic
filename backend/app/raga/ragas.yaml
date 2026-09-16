@@ -1,0 +1,79 @@
+- name: Mohanam
+  tradition: carnatic
+  aliases: [Bhupali, Bhup]
+  parent: Harikambhoji
+  arohana: "S R2 G3 P D2 S'"
+  avarohana: "S' D2 P G3 R2 S"
+  vadi: G3
+  samvadi: D2
+  pakad: ["G3 P D2 S' D2 P G3", "P G3 R2 S"]
+
+- name: Kalyani
+  tradition: carnatic
+  aliases: [Yaman]
+  parent: Kalyani
+  arohana: "S R2 G3 M2 P D2 N3 S'"
+  avarohana: "S' N3 D2 P M2 G3 R2 S"
+  vadi: G3
+  samvadi: N3
+  pakad: ["N3, R2 G3", "M2 G3 R2 S", "G3 M2 D2 N3 S'"]
+
+- name: Shankarabharanam
+  tradition: carnatic
+  aliases: [Bilawal]
+  parent: Shankarabharanam
+  arohana: "S R2 G3 M1 P D2 N3 S'"
+  avarohana: "S' N3 D2 P M1 G3 R2 S"
+  vadi: D2
+  samvadi: G3
+  pakad: ["S R2 G3 M1 P", "P M1 G3 R2 S", "N3 D2 P M1 G3"]
+
+- name: Hamsadhwani
+  tradition: carnatic
+  aliases: []
+  parent: Shankarabharanam
+  arohana: "S R2 G3 P N3 S'"
+  avarohana: "S' N3 P G3 R2 S"
+  vadi: G3
+  samvadi: N3
+  pakad: ["G3 R2 S N3, S", "P N3 S' N3 P", "R2 G3 P N3"]
+
+- name: Kharaharapriya
+  tradition: carnatic
+  aliases: [Kafi]
+  parent: Kharaharapriya
+  arohana: "S R2 G2 M1 P D2 N2 S'"
+  avarohana: "S' N2 D2 P M1 G2 R2 S"
+  vadi: G2
+  samvadi: N2
+  pakad: ["S R2 G2 M1 P", "N2 D2 P M1 G2 R2 S", "G2 R2 S N2, S"]
+
+- name: Bhupali
+  tradition: hindustani
+  aliases: [Mohanam, Bhup]
+  parent: Kalyan
+  arohana: "S R G P D S'"
+  avarohana: "S' D P G R S"
+  vadi: G
+  samvadi: D
+  pakad: ["G R S D, S R G", "P G D P G R S"]
+
+- name: Yaman
+  tradition: hindustani
+  aliases: [Kalyani, Kalyan]
+  parent: Kalyan
+  arohana: "N, R G M P D N S'"
+  avarohana: "S' N D P M G R S"
+  vadi: G
+  samvadi: N
+  pakad: ["N, R G", "P M G R S", "M D N S'"]
+
+- name: Bhairavi
+  tradition: hindustani
+  aliases: [Hanumatodi, Todi]
+  parent: Bhairavi
+  arohana: "S r g m P d n S'"
+  avarohana: "S' n d P m g r S"
+  vadi: m
+  samvadi: S
+  pakad: ["g m P d P", "m g r S", "d n S' n d P"]
