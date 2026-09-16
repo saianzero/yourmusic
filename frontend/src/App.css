@@ -51,3 +51,8 @@ button:disabled { opacity: 0.5; cursor: default; }
 .motifs { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .motifs li { background: var(--accent-soft); padding: 4px 10px; border-radius: 999px; font-size: 0.9rem; }
 .motifs span { color: var(--muted); margin-left: 4px; }
+.controls label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.controls input[type=number] { font: inherit; width: 5.5em; padding: 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); }
+button.link { font: inherit; font-size: 0.85rem; background: none; border: none; color: var(--accent); cursor: pointer; margin-left: 10px; padding: 0; text-decoration: underline; }
+.swaras { display: flex; flex-wrap: wrap; gap: 4px 0; line-height: 2; }
+.swaras span { display: inline-block; padding: 0 6px; border-left: 1px solid var(--line); font-variant-numeric: tabular-nums; }

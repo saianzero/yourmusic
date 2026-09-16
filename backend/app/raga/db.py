@@ -24,6 +24,7 @@ class Raga:
     vadi: int
     samvadi: int
     pakad: tuple[tuple[int, ...], ...]
+    names: dict[int, str]
     scale: frozenset[int] = field(init=False)
     up_pairs: frozenset[tuple[int, int]] = field(init=False)
     down_pairs: frozenset[tuple[int, int]] = field(init=False)
@@ -34,8 +35,17 @@ class Raga:
         object.__setattr__(self, "down_pairs", frozenset(_pairs(list(self.avarohana))))
 
 
+def _swara_names(*phrases: str) -> dict[int, str]:
+    names: dict[int, str] = {}
+    for tok in " ".join(phrases).split():
+        bare = tok.rstrip("',")
+        names.setdefault(pc(parse_token(bare)), bare)
+    return names
+
+
 def _from_yaml(d: dict) -> Raga:
     return Raga(
+        names=_swara_names(d["arohana"], d["avarohana"]),
         name=d["name"],
         tradition=d["tradition"],
         aliases=tuple(d.get("aliases", [])),

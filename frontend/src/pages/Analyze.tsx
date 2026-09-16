@@ -10,7 +10,7 @@ const STAGES: Record<string, string> = {
   tempo: "Estimating tempo",
 };
 
-export default function Analyze() {
+export default function Analyze({ onUseForGenerate }: { onUseForGenerate: (tonic: number, raga: string) => void }) {
   const [file, setFile] = useState<File | null>(null);
   const [tradition, setTradition] = useState("");
   const [separate, setSeparate] = useState(true);
@@ -77,12 +77,20 @@ export default function Analyze() {
       {error && <p className="error">{error}</p>}
       {job?.status === "running" && <p className="stage">{STAGES[job.stage] ?? job.stage}…</p>}
       {job?.status === "error" && <p className="error">{job.error}</p>}
-      {result && <Result r={result} onPickTonic={pickTonic} />}
+      {result && <Result r={result} onPickTonic={pickTonic} onUseForGenerate={onUseForGenerate} />}
     </section>
   );
 }
 
-function Result({ r, onPickTonic }: { r: Analysis; onPickTonic: (hz: number) => void }) {
+function Result({
+  r,
+  onPickTonic,
+  onUseForGenerate,
+}: {
+  r: Analysis;
+  onPickTonic: (hz: number) => void;
+  onUseForGenerate: (tonic: number, raga: string) => void;
+}) {
   const max = Math.max(...r.swara_histogram, 1e-6);
   return (
     <div className="result">
@@ -125,7 +133,11 @@ function Result({ r, onPickTonic }: { r: Analysis; onPickTonic: (hz: number) => 
         {r.candidates.map((c) => (
           <li key={c.name}>
             <div className="raga-head">
-              <b>{c.name}</b> <em>{c.tradition}</em> <span className="score">{c.score.toFixed(3)}</span>
+              <b>{c.name}</b> <em>{c.tradition}</em>
+              <button className="link" onClick={() => onUseForGenerate(r.tonic_hz, c.name)}>
+                generate in this raga
+              </button>
+              <span className="score">{c.score.toFixed(3)}</span>
             </div>
             <ul>
               {c.reasons.map((x, i) => (

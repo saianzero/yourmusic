@@ -46,6 +46,21 @@ export async function getAnalyze(id: string): Promise<AnalyzeJob> {
   return check(await fetch(`${API}/analyze/${id}`));
 }
 
+export type RagaInfo = { name: string; tradition: string; aliases: string[] };
+export type GenNote = { semitone: number; beats: number; name: string };
+export type GenerateResponse = { raga: string; tonic_hz: number; tempo_bpm: number; notes: GenNote[]; midi_base64: string };
+export type GenerateRequest = { raga: string; tonic_hz: number; tempo_bpm: number; bars: number; seed: number | null; drone: boolean };
+
+export async function listRagas(): Promise<RagaInfo[]> {
+  return check(await fetch(`${API}/ragas`));
+}
+
+export async function generateMusic(req: GenerateRequest): Promise<GenerateResponse> {
+  return check(
+    await fetch(`${API}/generate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(req) }),
+  );
+}
+
 export async function overrideTonic(id: string, tonic_hz: number): Promise<AnalyzeJob> {
   return check(
     await fetch(`${API}/analyze/${id}/tonic`, {

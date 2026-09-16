@@ -54,3 +54,26 @@ class AnalyzeJob(BaseModel):
 
 class TonicOverride(BaseModel):
     tonic_hz: float
+
+
+class GenerateRequest(BaseModel):
+    raga: str
+    tonic_hz: float = 220.0
+    tempo_bpm: float = 90.0
+    bars: int = 8
+    seed: int | None = None
+    drone: bool = True
+
+
+class GenNoteOut(BaseModel):
+    semitone: int
+    beats: float
+    name: str
+
+
+class GenerateResponse(BaseModel):
+    raga: str
+    tonic_hz: float
+    tempo_bpm: float
+    notes: list[GenNoteOut]
+    midi_base64: str

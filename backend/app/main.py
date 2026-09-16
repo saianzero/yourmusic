@@ -1,3 +1,4 @@
+import base64
 import shutil
 import uuid
 from concurrent.futures import ThreadPoolExecutor
@@ -9,10 +10,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .audio.pipeline import AnalysisResult, analyze_track, extract_track
 from .audio.pitch import PitchTrack
+from .generate.grammar import generate, to_names
+from .generate.render import render_midi
 from .models import (
-    AnalysisOut, AnalyzeJob, IdentifyRequest, IdentifyResponse, MotifOut, RagaCandidate, TonicOverride,
+    AnalysisOut, AnalyzeJob, GenerateRequest, GenerateResponse, GenNoteOut, IdentifyRequest, IdentifyResponse,
+    MotifOut, RagaCandidate, TonicOverride,
 )
-from .raga.db import load_ragas
+from .raga.db import get_raga, load_ragas
 from .raga.identify import histogram, identify
 from .raga.swara import parse_phrase
 
@@ -129,6 +133,25 @@ def analyze_status(job_id: str):
     if job is None:
         raise HTTPException(404, "job not found")
     return _job_out(job)
+
+
+@app.post("/generate", response_model=GenerateResponse)
+def generate_music(req: GenerateRequest):
+    try:
+        raga = get_raga(req.raga)
+    except KeyError:
+        raise HTTPException(404, f"unknown raga {req.raga!r}")
+    if not 40 <= req.tonic_hz <= 1000 or not 30 <= req.tempo_bpm <= 300 or not 1 <= req.bars <= 64:
+        raise HTTPException(400, "tonic_hz, tempo_bpm or bars out of range")
+    notes = generate(raga, bars=req.bars, seed=req.seed)
+    midi = render_midi(notes, req.tonic_hz, req.tempo_bpm, drone=req.drone)
+    return GenerateResponse(
+        raga=raga.name,
+        tonic_hz=req.tonic_hz,
+        tempo_bpm=req.tempo_bpm,
+        notes=[GenNoteOut(semitone=n.semitone, beats=n.beats, name=nm) for n, nm in zip(notes, to_names(raga, notes))],
+        midi_base64=base64.b64encode(midi).decode(),
+    )
 
 
 @app.post("/analyze/{job_id}/tonic", response_model=AnalyzeJob)
